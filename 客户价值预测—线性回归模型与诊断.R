@@ -1,45 +1,45 @@
-##################µÚÆßÕÂ ¿Í»§¼ÛÖµÔ¤²â¡ªÏßÐÔ»Ø¹éÄ£ÐÍÓëÕï¶Ï###########################
+##################ç¬¬ä¸ƒç«  å®¢æˆ·ä»·å€¼é¢„æµ‹â€”çº¿æ€§å›žå½’æ¨¡åž‹ä¸Žè¯Šæ–­###########################
 
-####################ÏßÐÔ»Ø¹é-------------------------------------------------------
+####################çº¿æ€§å›žå½’-------------------------------------------------------
 creditcard_exp<-read.csv("creditcard_exp.csv")
 creditcard_exp<-na.omit(creditcard_exp)
 creditcard_exp$gender<-as.factor(creditcard_exp$gender)
 attach(creditcard_exp)
-##¼òµ¥ÏßÐÔ»Ø¹é
+##ç®€å•çº¿æ€§å›žå½’
 lm_s<-lm(avg_exp~Income)
 summary(lm_s)
-##Ê¹ÓÃpredict»òfit²úÉúÔ¤²âÖµ£¬Ê¹ÓÃresid²úÉú²Ð²î
+##ä½¿ç”¨predictæˆ–fitäº§ç”Ÿé¢„æµ‹å€¼ï¼Œä½¿ç”¨residäº§ç”Ÿæ®‹å·®
 creditcard_exp$Pred1_avg_exp<-predict(lm_s)
 creditcard_exp$Pred2_avg_exp<-fitted(lm_s)
 creditcard_exp$resid_avg_exp<-resid(lm_s)
-##¶àÔªÏßÐÔ»Ø¹é
+##å¤šå…ƒçº¿æ€§å›žå½’
 lm_m<-lm(avg_exp~Age+Income+dist_home_val+dist_avg_income,data=creditcard_exp)
 summary(lm_m)
-##±äÁ¿É¸Ñ¡
+##å˜é‡ç­›é€‰
 lm_m<-lm(avg_exp~Age+Income+dist_home_val+dist_avg_income,data= creditcard_exp)
-##ÏòÇ°·¨
+##å‘å‰æ³•
 lm_forward<-step(lm_m,direction = "forward")
-##Ïòºó·¨
+##å‘åŽæ³•
 lm_backward=step(lm_m,direction = "backward")
-##Öð²½·¨
+##é€æ­¥æ³•
 lm_both<-step(lm_m,direction = "both")
 summary(lm_both)
 detach(creditcard_exp)
 
-####################ÏßÐÔ»Ø¹éµÄÕï¶Ï-------------------------------------------------
+####################çº¿æ€§å›žå½’çš„è¯Šæ–­-------------------------------------------------
 exp <- read.csv("creditcard_exp.csv")
 names(exp)
 exp <-na.omit(exp)
-##¹¹½¨ÏßÐÔÄ£ÐÍ
+##æž„å»ºçº¿æ€§æ¨¡åž‹
 ana1<-lm(avg_exp~Income,data=exp)
 summary(ana1)
-##Éú³ÉÔ¤²âÖµºÍ²Ð²î
+##ç”Ÿæˆé¢„æµ‹å€¼å’Œæ®‹å·®
 exp$pred<-predict(ana1)
 exp$res<-resid(ana1)
-##»æÖÆÉ¢µãÍ¼
+##ç»˜åˆ¶æ•£ç‚¹å›¾
 plot(exp$res~exp$pred)
 abline(h=0)
-##Óöµ½Òì·½²îÇé¿ö£¬Êµ¼ÊÉÏ×î³£ÓÃµÄÊÇ¶Ô±»½âÊÍ±äÁ¿È¡¶ÔÊý
+##é‡åˆ°å¼‚æ–¹å·®æƒ…å†µï¼Œå®žé™…ä¸Šæœ€å¸¸ç”¨çš„æ˜¯å¯¹è¢«è§£é‡Šå˜é‡å–å¯¹æ•°
 ana2<-lm(avg_exp_ln~Income,data=exp)
 exp$pred<-predict(ana2)
 exp$res<-resid(ana2)
@@ -49,46 +49,46 @@ abline(h=0)
 library(car)
 qqPlot(ana2,id.method="identify",simulate=TRUE)
 qqnorm(exp$res);qqline(exp$res)
-##Ç¿Ó°Ïìµã·ÖÎö
+##å¼ºå½±å“ç‚¹åˆ†æž
 ana3<-lm(avg_exp_ln~Income,data=exp)
 exp$rstu=rstudent(ana2)
-plot(exp$pred,exp$rstu,xlab='Ô¤²âÖµ',ylab='Ñ§Éú»¯²Ð²î',ylim=c(-4,4))
+plot(exp$pred,exp$rstu,xlab='é¢„æµ‹å€¼',ylab='å­¦ç”ŸåŒ–æ®‹å·®',ylim=c(-4,4))
 abline(h=c(0,2,3,-2,-3))
 exp_outlier=exp[abs(exp$rstu)>2,]
 exp_new=exp[abs(exp$rstu)<=2,]
-##¶àÖØ¹²ÏßÐÔ
-##·½²îÅòÕÍÏµÊý
+##å¤šé‡å…±çº¿æ€§
+##æ–¹å·®è†¨èƒ€ç³»æ•°
 ana3<-lm(avg_exp_ln~Income+Age+dist_home_val+dist_avg_income,data=exp)
 vif(ana3)
-##±£Áô·½²îÅòÕÍÏµÊý½Ï¸ßµÄÁ½¸ö±äÁ¿ÖÐµÄÒ»¸ö½øÐÐ»Ø¹é
+##ä¿ç•™æ–¹å·®è†¨èƒ€ç³»æ•°è¾ƒé«˜çš„ä¸¤ä¸ªå˜é‡ä¸­çš„ä¸€ä¸ªè¿›è¡Œå›žå½’
 ana3<-lm(avg_exp_ln~Income+Age+dist_home_val,data=exp)
 vif(ana3)
 
-####################ÕýÔò»¯·½·¨-----------------------------------------------------
+####################æ­£åˆ™åŒ–æ–¹æ³•-----------------------------------------------------
 attach(exp)
 library(MASS)
 library(glmnet)
-#####alpha = 0±íÊ¾Áë»Ø¹é#####
+#####alpha = 0è¡¨ç¤ºå²­å›žå½’#####
 r1 <- glmnet(y=avg_exp_ln, x=cbind(Income,Age,dist_home_val,dist_avg_income), 
              family = "gaussian",alpha=0)
 plot(r1, xvar = "lambda")
-##½»²æÑéÖ¤
+##äº¤å‰éªŒè¯
 r2<-cv.glmnet(y=avg_exp_ln, x=cbind(Income,Age,dist_home_val,dist_avg_income), 
                 family="gaussian",alpha=0,nfolds=3)
 plot(r2, xvar = "lambda")
 r2$lambda.min
 r2$lambda.1se
-##ÉèÖÃlambda=0.0£¬ana3ÎªÆÕÍ¨×îÐ¡¶þ³Ë»Ø¹é£¬¿ÉÒÔ¿´µ½Á½ÕßÏµÊý¹À¼ÆÖµ»ù±¾Ò»Ñù
+##è®¾ç½®lambda=0.0ï¼Œana3ä¸ºæ™®é€šæœ€å°äºŒä¹˜å›žå½’ï¼Œå¯ä»¥çœ‹åˆ°ä¸¤è€…ç³»æ•°ä¼°è®¡å€¼åŸºæœ¬ä¸€æ ·
 ana3<-lm(avg_exp_ln~Income+Age+dist_home_val+dist_avg_income,data=exp)
 ana3
 r1=glmnet(y=avg_exp_ln,lambda=0.0,x=cbind(Income,Age,dist_home_val,dist_avg_income),
           family = "gaussian",alpha=0)
 coef(r1)
-##ÉèÖÃLambdaÎª0.16720£¬½øÐÐ½¨Ä£
+##è®¾ç½®Lambdaä¸º0.16720ï¼Œè¿›è¡Œå»ºæ¨¡
 r1=glmnet(y=avg_exp_ln,lambda=0.1672,x=cbind(Income,Age,dist_home_val,dist_avg_income),
           family = "gaussian",alpha=0)
 coef(r1)
-#####alpha=1±íÊ¾Lasso»Ø¹é#####
+#####alpha=1è¡¨ç¤ºLassoå›žå½’#####
 r1 <- glmnet(y=avg_exp_ln,x=cbind(Income,Age,dist_home_val,dist_avg_income),
              family = "gaussian",alpha=1)
 plot(r1,xvar = "lambda")
@@ -98,7 +98,7 @@ r2 <- cv.glmnet(y=avg_exp_ln,x=cbind(Income,Age,dist_home_val,dist_avg_income),
 plot(r2)
 r2$lambda.min
 r2$lambda.1se
-##ÌôÑ¡lambda.min×÷ÎªlambdaÖµ£¬½¨Á¢Lasso»Ø¹éÄ£ÐÍ
+##æŒ‘é€‰lambda.minä½œä¸ºlambdaå€¼ï¼Œå»ºç«‹Lassoå›žå½’æ¨¡åž‹
 r3 <- glmnet(y=avg_exp_ln,x=cbind(Income,Age,dist_home_val,dist_avg_income),
              family = "gaussian",alpha=1, lambda = r2$lambda.min)
 coef(r3)
